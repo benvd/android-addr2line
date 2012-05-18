@@ -21,12 +21,26 @@ def main():
 
     print ''
 
+    addresses = []
+    functions = []
+    files = []
+
     for line in lines:
         address = get_address(line)
         if address is not None:
             source = get_source_line(address)
             if source is not None:
-                print '%s %s (%s)' % (address, source[1], source[0])
+                addresses.append(address)
+                functions.append(source[0])
+                files.append(source[1])
+
+    longest_address = len(max(addresses, key=len))
+    longest_file = len(max(files, key=len))
+
+    for i in range(0, len(addresses)):
+        print addresses[i].ljust(longest_address + 1),
+        print files[i].ljust(longest_file + 1),
+        print functions[i]
 
 def get_address(line):
     search = re.search('#[0-9]{2} +pc +([0-9A-Fa-f]{8}) +/data', line)
