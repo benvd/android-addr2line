@@ -2,6 +2,7 @@
 import sys
 import re
 import subprocess
+import os
 
 ADDR2LINE_BINARY='' # full path to arm-linux-androideabi-addr2line
 LIBRARY='' # full path to your .so file
@@ -33,6 +34,10 @@ def main():
                 addresses.append(address)
                 functions.append(source[0])
                 files.append(source[1])
+
+    if len(addresses) == 0 or len(files) == 0:
+        print 'No addresses found from %s.' % os.path.basename(LIBRARY)
+        return
 
     longest_address = len(max(addresses, key=len))
     longest_file = len(max(files, key=len))
